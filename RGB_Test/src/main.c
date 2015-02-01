@@ -35,7 +35,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_hal.h"
 #include "cmsis_os.h"
-#include "stdio.h"
+#include <stdio.h>
 
 /* USER CODE BEGIN Includes */
 
@@ -247,7 +247,7 @@ void MX_TIM1_Init(void)
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 1000;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 500;
+  htim1.Init.Period = 255;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   HAL_TIM_PWM_Init(&htim1);
@@ -265,7 +265,7 @@ void MX_TIM1_Init(void)
   HAL_TIMEx_ConfigBreakDeadTime(&htim1, &sBreakDeadTimeConfig);
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 15;
+  sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
@@ -284,7 +284,7 @@ void MX_TIM16_Init(void)
   htim16.Instance = TIM16;
   htim16.Init.Prescaler = 1000;
   htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim16.Init.Period = 500;
+  htim16.Init.Period = 255;
   htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim16.Init.RepetitionCounter = 0;
   HAL_TIM_Base_Init(&htim16);
@@ -321,7 +321,7 @@ void MX_TIM17_Init(void)
   htim17.Instance = TIM17;
   htim17.Init.Prescaler = 1000;
   htim17.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim17.Init.Period = 500;
+  htim17.Init.Period = 255;
   htim17.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim17.Init.RepetitionCounter = 0;
   HAL_TIM_Base_Init(&htim17);
@@ -338,7 +338,7 @@ void MX_TIM17_Init(void)
   HAL_TIMEx_ConfigBreakDeadTime(&htim17, &sBreakDeadTimeConfig);
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 10;
+  sConfigOC.Pulse = 25;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
@@ -408,8 +408,12 @@ void StartDefaultTask(void const * argument)
 
   /* USER CODE BEGIN 5 */
 
-  printf("Duvitech 2015 (RGB Demo)\r\n");
-  printf("FreeRTOS v8.1.2\r\n");
+  printf("\033[2J");
+  printf("\033[1;1H");
+
+  printf("Duvitech 2015 (RGB Demo)\n\r");
+  printf("FreeRTOS v8.1.2\n\r");
+
   if (HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4) != HAL_OK)
   {
      /* PWM Generation Error */

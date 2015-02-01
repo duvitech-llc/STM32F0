@@ -54,6 +54,7 @@ TIM_HandleTypeDef htim17;
 TSC_HandleTypeDef htsc;
 
 UART_HandleTypeDef huart1;
+TSC_HandleTypeDef TscHandle;
 
 osThreadId defaultTaskHandle;
 
@@ -432,7 +433,8 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN 5 */
-
+  uint32_t val;
+  uint8_t bSwitch = 0x00;
   printf("\033[2J");
   printf("\033[1;1H");
 
@@ -459,11 +461,21 @@ void StartDefaultTask(void const * argument)
 	  printf("Failed to start Timer 17 channel 1\r\n");
   }
 
+  HAL_TSC_Start(&htsc);
+
   /* Infinite loop */
   for(;;)
   {
 	HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
     osDelay(250);
+    val = HAL_TSC_GroupGetValue(&htsc, TSC_GROUP2);
+    printf("\033[K");
+    if(bSwitch)
+    	printf("Group 2: 0x%08x\r",(unsigned int)val);
+    else
+    	printf("       : 0x%08x\r",(unsigned int)val);
+
+    bSwitch = !bSwitch;
   }
 
   /* USER CODE END 5 */ 

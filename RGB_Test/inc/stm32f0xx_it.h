@@ -46,6 +46,7 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
+void TSC_IRQHandler(void);
 void SysTick_Handler(void);
 
 #ifdef __cplusplus

@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    stm32f0xx_it.c
-  * @date    31/01/2015 09:07:28
+  * @date    31/01/2015 22:30:17
   * @brief   Interrupt Service Routines.
   ******************************************************************************
   *
@@ -43,9 +43,25 @@
  
 extern void xPortSysTickHandler(void);
 
+extern TSC_HandleTypeDef htsc;
+
 /******************************************************************************/
 /*            Cortex-M0 Processor Interruption and Exception Handlers         */ 
 /******************************************************************************/
+
+/**
+* @brief This function handles Touch sensing interrupt.
+*/
+void TSC_IRQHandler(void)
+{
+  /* USER CODE BEGIN TSC_IRQn 0 */
+
+  /* USER CODE END TSC_IRQn 0 */
+  HAL_TSC_IRQHandler(&htsc);
+  /* USER CODE BEGIN TSC_IRQn 1 */
+
+  /* USER CODE END TSC_IRQn 1 */
+}
 
 /**
 * @brief This function handles System tick timer.

@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * File Name          : stm32f0xx_hal_msp.c
-  * Date               : 31/01/2015 10:41:08
+  * Date               : 31/01/2015 22:30:20
   * Description        : This file provides code for the MSP Initialization 
   *                      and de-Initialization codes.
   ******************************************************************************
@@ -329,6 +329,77 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim_base)
   /* USER CODE BEGIN TIM17_MspDeInit 1 */
 
   /* USER CODE END TIM17_MspDeInit 1 */
+  }
+
+}
+
+void HAL_TSC_MspInit(TSC_HandleTypeDef* htsc)
+{
+
+  GPIO_InitTypeDef GPIO_InitStruct;
+  if(htsc->Instance==TSC)
+  {
+  /* USER CODE BEGIN TSC_MspInit 0 */
+
+  /* USER CODE END TSC_MspInit 0 */
+    /* Peripheral clock enable */
+    __TSC_CLK_ENABLE();
+
+    /**TSC GPIO Configuration
+    PA4     ------> TSC_G2_IO1
+    PA5     ------> TSC_G2_IO2
+    PA6     ------> TSC_G2_IO3
+    PA7     ------> TSC_G2_IO4
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_4;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
+    GPIO_InitStruct.Alternate = GPIO_AF3_TSC;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
+    GPIO_InitStruct.Alternate = GPIO_AF3_TSC;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* System interrupt init*/
+    HAL_NVIC_SetPriority(TSC_IRQn, 3, 0);
+    HAL_NVIC_EnableIRQ(TSC_IRQn);
+  /* USER CODE BEGIN TSC_MspInit 1 */
+
+  /* USER CODE END TSC_MspInit 1 */
+  }
+
+}
+
+void HAL_TSC_MspDeInit(TSC_HandleTypeDef* htsc)
+{
+
+  if(htsc->Instance==TSC)
+  {
+  /* USER CODE BEGIN TSC_MspDeInit 0 */
+
+  /* USER CODE END TSC_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __TSC_CLK_DISABLE();
+
+    /**TSC GPIO Configuration
+    PA4     ------> TSC_G2_IO1
+    PA5     ------> TSC_G2_IO2
+    PA6     ------> TSC_G2_IO3
+    PA7     ------> TSC_G2_IO4
+    */
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7);
+
+    /* Peripheral interrupt DeInit*/
+    HAL_NVIC_DisableIRQ(TSC_IRQn);
+
+  /* USER CODE BEGIN TSC_MspDeInit 1 */
+
+  /* USER CODE END TSC_MspDeInit 1 */
   }
 
 }

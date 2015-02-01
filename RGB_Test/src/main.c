@@ -51,6 +51,8 @@ TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
 
+TSC_HandleTypeDef htsc;
+
 UART_HandleTypeDef huart1;
 
 osThreadId defaultTaskHandle;
@@ -68,6 +70,7 @@ static void MX_SPI2_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_TIM16_Init(void);
 static void MX_TIM17_Init(void);
+static void MX_TSC_Init(void);
 static void MX_USART1_UART_Init(void);
 void StartDefaultTask(void const * argument);
 
@@ -102,6 +105,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM16_Init();
   MX_TIM17_Init();
+  MX_TSC_Init();
   MX_USART1_UART_Init();
 
   /* USER CODE BEGIN 2 */
@@ -345,6 +349,27 @@ void MX_TIM17_Init(void)
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
   HAL_TIM_PWM_ConfigChannel(&htim17, &sConfigOC, TIM_CHANNEL_1);
+
+}
+
+/* TSC init function */
+void MX_TSC_Init(void)
+{
+
+    /**Configure the TSC peripheral
+    */
+  htsc.Instance = TSC;
+  htsc.Init.CTPulseHighLength = TSC_CTPH_2CYCLES;
+  htsc.Init.CTPulseLowLength = TSC_CTPL_2CYCLES;
+  htsc.Init.SpreadSpectrum = DISABLE;
+  htsc.Init.PulseGeneratorPrescaler = TSC_PG_PRESC_DIV64;
+  htsc.Init.MaxCountValue = TSC_MCV_255;
+  htsc.Init.IODefaultMode = TSC_IODEF_OUT_PP_LOW;
+  htsc.Init.AcquisitionMode = TSC_ACQ_MODE_NORMAL;
+  htsc.Init.MaxCountInterrupt = DISABLE;
+  htsc.Init.ChannelIOs = TSC_GROUP2_IO3|TSC_GROUP2_IO2|TSC_GROUP2_IO4;
+  htsc.Init.SamplingIOs = TSC_GROUP2_IO1;
+  HAL_TSC_Init(&htsc);
 
 }
 

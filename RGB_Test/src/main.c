@@ -35,6 +35,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_hal.h"
 #include "cmsis_os.h"
+#include "main.h"
 #include <stdio.h>
 
 /* USER CODE BEGIN Includes */
@@ -59,6 +60,8 @@ TSC_HandleTypeDef TscHandle;
 osThreadId defaultTaskHandle;
 
 /* USER CODE BEGIN PV */
+
+
 
 /* USER CODE END PV */
 
@@ -437,7 +440,7 @@ void StartDefaultTask(void const * argument)
   uint8_t bSwitch = 0x00;
   printf("\033[2J");
   printf("\033[1;1H");
-
+  printf("\033[37m");
   printf("Duvitech 2015 (RGB Demo)\n\r");
   printf("FreeRTOS v8.1.2\n\r");
 
@@ -471,9 +474,13 @@ void StartDefaultTask(void const * argument)
     val = HAL_TSC_GroupGetValue(&htsc, TSC_GROUP2);
     printf("\033[K");
     if(bSwitch)
-    	printf("Group 2: 0x%08x\r",(unsigned int)val);
+    {
+    	printf("\033[37mGroup 2: \033[33m 0x%08x\r",(unsigned int)val);
+    }
     else
-    	printf("       : 0x%08x\r",(unsigned int)val);
+    {
+    	printf("\033[37m       : \033[33m 0x%08x\r",(unsigned int)val);
+    }
 
     bSwitch = !bSwitch;
   }
